@@ -1,0 +1,35 @@
+{
+  "name": "tutor_call_online",
+  "version": "1.0.0",
+  "description": "Designed to be used in classrooms or lecture theatres to let students join a waiting list digitally instead of keeping your hand raised. Product is based on an internal tool used at the University of Canterbury's computer labs, but now with the hope to let that great tool be used in all help rooms.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abilash-Sivasith/tutor_call_online.git"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abilash-Sivasith/tutor_call_online/issues"
+  },
+  "homepage": "https://github.com/Abilash-Sivasith/tutor_call_online#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
