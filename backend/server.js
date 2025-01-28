@@ -13,11 +13,12 @@ const PORT = process.env.PORT || 2142;
 app.use(express.json()) // to parse req.body (middle layer)
 app.use(express.urlencoded({extended: true})); //  to parse form data(urlencoded)
 
-import {createRoom} from "./controllers/newRoom.controller.js";
+import {createRoom, getRoom} from "./controllers/newRoom.controller.js";
 
 const router = express.Router();
 
 router.post("/createRoom", createRoom);
+router.get("/getRoom/:roomId", getRoom) 
 
 app.use("/api", router);
 
