@@ -6,10 +6,17 @@ export const getRoom = async (req, res) => {
     const { roomId } = req.params;
     // console.log(roomId);
     try {
-        console.log("hit getRoom endpoint");
-        res.json({data: "You hit the getRoom endpoint"});
+        const room = await Room.findONe({ roomId });
+        if (!room) {
+            res.status(404).json({message: "Room Not Found"});
+        }
+        res.status(200).json(user);
+        // console.log("hit getRoom endpoint");
+        // res.json({data: "You hit the getRoom endpoint"});
     } catch (error) {
-            console.error(error)
+        // console.error(error)
+        console.log("Error in getRoom: ", error.message);
+        res.status(500).json({error: error.message});
     }
 }
    
@@ -18,6 +25,8 @@ export const createRoom = async (req, res) => {
     try {
         console.log("hit createRoom endpoint");
         res.json({data: "You hit the createRoom endpoint"});
+        // generate random 6 letter unique value
+        // make this user the owner 
 
 /*
         const newUser = new User({
