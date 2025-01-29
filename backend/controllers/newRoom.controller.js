@@ -26,6 +26,7 @@ export const createRoom = async (req, res) => {
         console.log("hit createRoom endpoint");
         res.json({data: "You hit the createRoom endpoint"});
         // generate random 6 letter unique value
+            // https://stackoverflow.com/questions/40181630/how-to-generate-a-list-of-random-letters-assigned-to-random-numbers
         // make this user the owner 
 
 /*
