@@ -7,7 +7,7 @@ export const getRoom = async (req, res) => {
         const { roomId } = req.params;
         // console.log(roomId);
         try {
-            const room = await Room.findONe({ roomId });
+            const room = await Room.findOne({ roomId });
             if (!room) {
                 res.status(404).json({message: "Room Not Found"});
             }
@@ -22,7 +22,6 @@ export const getRoom = async (req, res) => {
     }
 }
    
-
 export const createRoom = async (req, res) => {
     {
         try {
@@ -47,5 +46,19 @@ export const createRoom = async (req, res) => {
             console.log("Error in createRoom: ", error.message);
             res.status(500).json({error: error.message});
         } 
+    }
+}
+
+export const deleteRoom = async (req, res) => {
+    {
+        try {
+            const {roomId} = req.body;
+            const room = await Room.deleteOne({ roomId});
+            res.status(200).json({message: "Room deleted successfully"})
+            // console.log("hit deleteRoom endpoint");
+            // res.json({data: "You hit the deleteRoom endpoint"});
+        } catch (error) {
+            res.status(500).json({error: error.message});
+        }
     }
 }
