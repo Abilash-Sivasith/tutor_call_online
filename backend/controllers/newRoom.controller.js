@@ -1,53 +1,51 @@
 import User from "../models/user.model.js";
 import Room from "../models/room.model.js";
-
+import {uniqueRoomIdGenerator} from "../logic/uniqueRoomId.logic.js"
 
 export const getRoom = async (req, res) => {
-    const { roomId } = req.params;
-    // console.log(roomId);
-    try {
-        const room = await Room.findONe({ roomId });
-        if (!room) {
-            res.status(404).json({message: "Room Not Found"});
+    {
+        const { roomId } = req.params;
+        // console.log(roomId);
+        try {
+            const room = await Room.findONe({ roomId });
+            if (!room) {
+                res.status(404).json({message: "Room Not Found"});
+            }
+            res.status(200).json(user);
+            // console.log("hit getRoom endpoint");
+            // res.json({data: "You hit the getRoom endpoint"});
+        } catch (error) {
+            // console.error(error)
+            console.log("Error in getRoom: ", error.message);
+            res.status(500).json({error: error.message});
         }
-        res.status(200).json(user);
-        // console.log("hit getRoom endpoint");
-        // res.json({data: "You hit the getRoom endpoint"});
-    } catch (error) {
-        // console.error(error)
-        console.log("Error in getRoom: ", error.message);
-        res.status(500).json({error: error.message});
     }
 }
    
 
 export const createRoom = async (req, res) => {
-    try {
-        console.log("hit createRoom endpoint");
-        res.json({data: "You hit the createRoom endpoint"});
-        // generate random 6 letter unique value
-            // https://stackoverflow.com/questions/40181630/how-to-generate-a-list-of-random-letters-assigned-to-random-numbers
-        // make this user the owner 
+    {
+        try {
+            const {uName} =  req.body;
+            if (!uName) {
+                return res.status(400).json({ error: "UserId is required" });
+            }
 
-/*
-        const newUser = new User({
-            UserId: "asi1"
-        });
-        
-        await newUser.save();
-        console.log(newUser);
-
-        console.log("---------------------");
-
-        const newRoom = new Room({
-            RoomId: "12345",
-            Owner: newUser._id,
-        });
-
-        await newRoom.save()
-        console.log(newRoom);
-*/
-    } catch (error) {   
-        console.error(error)
-    } 
+            const newUser = new User({
+                UserId: uName,
+            });
+            console.log(newUser)
+            await newUser.save();
+            let uniqueRoomId = uniqueRoomIdGenerator();
+            const newRoom = new Room({
+                RoomId: uniqueRoomId,
+                Owner: newUser._id,
+            });
+            await newRoom.save();
+            res.status(201).json({RoomId: newRoom.RoomId, Owner: newRoom.Owner})
+        } catch (error) {   
+            console.log("Error in createRoom: ", error.message);
+            res.status(500).json({error: error.message});
+        } 
+    }
 }

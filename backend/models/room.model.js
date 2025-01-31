@@ -8,19 +8,19 @@ const roomSchema = new mongoose.Schema(
             unique: true,
         },
         Owner: {
-            type: mongoose.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
-        InRoom: {
-            type: mongoose.Types.ObjectId,
+        InRoom: [{
+            type: mongoose.Schema.Types.ObjectId,  // Array of ObjectIds
             ref: "User",
             default: []
-        },
-        InWaitlist: {
-            type: mongoose.Types.ObjectId,
-            ref : "User",
-            default : []
-        }
+        }],
+        InWaitlist: [{
+            type: mongoose.Schema.Types.ObjectId,  // Array of ObjectIds
+            ref: "User",
+            default: []
+        }]
     });
 
 const Room = mongoose.model("Room", roomSchema);
