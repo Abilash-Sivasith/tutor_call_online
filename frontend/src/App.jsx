@@ -9,7 +9,7 @@ import JoinRoomPage from "./pages/JoinRoomPage";
 
 function App() {
   return (
-    <div className="flex max-w-6xl mx-auto">
+    <div className="min-h-screen flex justify-center items-center">
         <Routes>
           <Route path="/" element={<HomePage />}/>
           <Route path="/CreateRoomPage" element={<CreateRoomPage/>}/>
