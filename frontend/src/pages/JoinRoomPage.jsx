@@ -17,7 +17,7 @@ const JoinRoomPage = () => {
           />
             <button 
             className="px-20 py-5 bg-green-500 text-white rounded-lg hover:bg-green-600" 
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/InRoomPage")}
           >
             Join Room
           </button>

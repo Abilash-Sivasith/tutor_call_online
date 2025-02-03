@@ -5,7 +5,7 @@ import {Routes, Route} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import CreateRoomPage from "./pages/CreateRoomPage";
 import JoinRoomPage from "./pages/JoinRoomPage";
-
+import InRoomPage from "./pages/InRoomPage";
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
           <Route path="/" element={<HomePage />}/>
           <Route path="/CreateRoomPage" element={<CreateRoomPage/>}/>
           <Route path="/JoinRoomPage" element={<JoinRoomPage/>}/>
+          <Route path="/InRoomPage" element={<InRoomPage/>}/>
         </Routes>
     </div>
 
