@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex   flex-col justify-center items-center h-screen">
       <div className="text-white py-10 font-mono text-4xl">
       WELCOME TO TUTOR CALL ONLINE
       </div>
