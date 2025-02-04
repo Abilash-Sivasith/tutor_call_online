@@ -1,7 +1,7 @@
 
     const FootNote = () => {
         return (
-            <footer className="footer bg-neutral text-neutral-content p-10 justify-center items-center">
+            <footer className="footer bg-neutral text-neutral-content p-6 justify-center items-center">
                 <aside className="mr-12">
                     <img
                         src="../src/pages/common/svgs/cube.svg"  // path relative to the public folder

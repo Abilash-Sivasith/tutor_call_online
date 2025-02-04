@@ -6,7 +6,10 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true,
-        }
+        },
+        timeInList: { 
+            type: Number, 
+            default: () => Date.now() } 
     });
     
 const User = mongoose.model("User", UserSchema);
