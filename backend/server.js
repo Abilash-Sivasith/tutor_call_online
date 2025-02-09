@@ -16,7 +16,7 @@ import {createRoom, getRoom, deleteRoom} from "./controllers/newRoom.controller.
 const router = express.Router();
 
 router.post("/createRoom", createRoom); // when creating a new room
-router.get("/getRoom/:roomId", getRoom); // when joining room
+router.post("/getRoom", getRoom); // when joining room
 router.post("/deleteRoom/:roomId", deleteRoom)
 
 app.use("/api", router);

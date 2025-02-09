@@ -4,13 +4,14 @@ import {uniqueRoomIdGenerator} from "../logic/uniqueRoomId.logic.js"
 
 export const getRoom = async (req, res) => {
     {
-        const { roomId } = req.params;
+        const { roomId, username } = req.body;
         // console.log(roomId);
         try {
             const room = await Room.findOne({ roomId });
             if (!room) {
                 res.status(404).json({message: "Room Not Found"});
             }
+            room.InRoom.push(username);
             res.status(200).json(user);
             // console.log("hit getRoom endpoint");
             // res.json({data: "You hit the getRoom endpoint"});
