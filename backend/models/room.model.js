@@ -2,26 +2,21 @@ import mongoose from "mongoose";
 
 const roomSchema = new mongoose.Schema(
     {
-        RoomId : {
+        RoomId: {
             type: String,
             required: true,
             unique: true,
         },
-        Owner: {
-            type: mongoose.Schema.Types.ObjectId,
-            required: true,
-        },
         InRoom: [{
-            type: mongoose.Schema.Types.ObjectId,  // Array of ObjectIds
-            ref: "User",
+            type: String,  // Changed from ObjectId to String
             default: []
         }],
         InWaitlist: [{
-            type: mongoose.Schema.Types.ObjectId,  // Array of ObjectIds
-            ref: "User",
+            type: String,  // Changed from ObjectId to String
             default: []
         }]
-    });
+    }
+);
 
 const Room = mongoose.model("Room", roomSchema);
 export default Room;

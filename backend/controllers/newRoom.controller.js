@@ -3,25 +3,37 @@ import Room from "../models/room.model.js";
 import {uniqueRoomIdGenerator} from "../logic/uniqueRoomId.logic.js"
 
 export const getRoom = async (req, res) => {
-    {
+    try {
         const { roomId, username } = req.body;
-        // console.log(roomId);
-        try {
-            const room = await Room.findOne({ roomId });
-            if (!room) {
-                res.status(404).json({message: "Room Not Found"});
-            }
-            room.InRoom.push(username);
-            res.status(200).json(user);
-            // console.log("hit getRoom endpoint");
-            // res.json({data: "You hit the getRoom endpoint"});
-        } catch (error) {
-            // console.error(error)
-            console.log("Error in getRoom: ", error.message);
-            res.status(500).json({error: error.message});
+
+        if (!roomId) {
+            return res.status(400).json({ message: "Room ID not entered" });
         }
+        if (!username) {
+            return res.status(400).json({ message: "Username not entered" });
+        }
+
+        const room = await Room.find({ roomId });
+
+        console.log(roomId);
+        console.log(room);
+
+        if (!room) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        await Room.findOneAndUpdate(
+            {roomId} ,  
+            { $push: { InRoom: username } }
+        );
+        
+        return res.status(200).json(room);
+
+    } catch (error) {
+        console.log("Error in getRoom: ", error.message);
+        return res.status(500).json({ error: error.message });
     }
-}
+};
    
 export const createRoom = async (req, res) => {
     {

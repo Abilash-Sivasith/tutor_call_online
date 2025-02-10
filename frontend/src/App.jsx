@@ -7,6 +7,7 @@ import CreateRoomPage from "./pages/CreateRoomPage";
 import JoinRoomPage from "./pages/JoinRoomPage";
 import InRoomPage from "./pages/InRoomPage";
 import FootNote from "./pages/common/footNote";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         </Routes>
       </div>
       <FootNote />
+      <Toaster/>
     </div>
   );
 }
