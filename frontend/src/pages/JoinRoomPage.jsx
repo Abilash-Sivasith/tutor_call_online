@@ -48,16 +48,17 @@ const JoinRoomPage = () => {
     };
 
     return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <div className="flex flex-col gap-4">
-          <form onSubmit={handleSubmit}>
+      <div className="flex justify-center items-center h-screen">
+        {/* Ensure the container width is not too large and center content */}
+        <div className="flex flex-col gap-6 w-full max-w-md p-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <input 
               type="text" 
               name="roomId"
               placeholder="Room Code"
               onChange={handleInputChange}
               value={formData.roomId} 
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
             <input 
               type="text" 
@@ -65,11 +66,11 @@ const JoinRoomPage = () => {
               placeholder="Username"
               onChange={handleInputChange}
               value={formData.username}
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered w-full"
             />
             <button 
               type="submit"
-              className='btn rounded-full btn-primary text-white'
+              className='btn rounded-full btn-primary text-white w-full'
               disabled={isPending}
             >
               {isPending ? "Loading..." : "Join Room"}

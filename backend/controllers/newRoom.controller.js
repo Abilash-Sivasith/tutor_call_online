@@ -6,25 +6,22 @@ export const getRoom = async (req, res) => {
     try {
         const { roomId, username } = req.body;
 
-        console.log(req.body)
         if (!roomId) {
             return res.status(400).json({ message: "Room ID not entered" });
         }
+
         if (!username) {
             return res.status(400).json({ message: "Username not entered" });
         }
 
-        // const room = await Room.findOne({ RoomId: roomId });
-        const room = await Room.findOneAndUpdate( {RoomId: roomId} ,{ $push: { InRoom: username } });
-
-        console.log(room);
+        const room = await Room.findOneAndUpdate( 
+            {RoomId: roomId} ,
+            { $push: { InRoom: username } }
+        );
 
         if (!room) {
             return res.status(404).json({ message: "Room not found" });
         }
-
-        // await Room.findOneAndUpdate( {RoomId: roomId} ,{ $push: { InRoom: username } });
-        console.log(room);
         
         return res.status(200).json({
             RoomId: room.roomId,
@@ -37,7 +34,7 @@ export const getRoom = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 };
-   
+
 export const createRoom = async (req, res) => {
     {
         try {
