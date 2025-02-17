@@ -8,11 +8,11 @@ const roomSchema = new mongoose.Schema(
             unique: true,
         },
         InRoom: [{
-            type: String,  // Changed from ObjectId to String
+            type: String,
             default: []
         }],
         InWaitlist: [{
-            type: String,  // Changed from ObjectId to String
+            type: String,
             default: []
         }]
     }
