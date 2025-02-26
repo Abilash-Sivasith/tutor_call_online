@@ -16,22 +16,26 @@ const InRoomPage = () => {
         { username: "vwx333", question: "8h"}, // 8th item (triggers scrolling)
     ]);
 
-    
-
     const location = useLocation();
     const { roomId, username } = location.state || {}; // Get the passed state from the previous page
     const myUsername = username;
 
     const isInList = tempUserList.some(entry => entry.username === myUsername);
 
+    const [questionNumber, setQuestionNumber] = useState(""); // New state for question number input
+
     const addOrRemoveFromList = () => {
         if (isInList) {
             // Remove the user from the list
             setTempUserList(prevList => prevList.filter(user => user.username !== myUsername));
         } else {
-            // Add the user to the list
-            setTempUserList(prevList => [...prevList, { username: myUsername, question: "9i", time: 120 }]);
+            // Add the user to the list with the entered question number
+            setTempUserList(prevList => [
+                ...prevList,
+                { username: myUsername, question: questionNumber || "No question" } // Default if no question is entered
+            ]);
         }
+        setQuestionNumber(""); // Clear the input after adding or removing
     };
 
     return (
@@ -65,13 +69,27 @@ const InRoomPage = () => {
                         </tbody>
                     </table>
                 </div>
-                <button 
-                    className={`px-20 py-5 text-white rounded-lg ${isInList ? "bg-orange-500 hover:bg-orange-600" : "bg-green-500 hover:bg-green-600"}`}
-                    onClick={addOrRemoveFromList}
-                >
-                    {isInList ? "Leave List" : "Join List"}
-                </button>
+
+                {/* Flex container for Join/Leave button and Question Number input */}
+                <div className="flex gap-4 items-center w-full">
+                    <button 
+                        className={`px-20 h-12 text-white rounded-lg whitespace-nowrap ${isInList ? "bg-orange-500 hover:bg-orange-600" : "bg-green-500 hover:bg-green-600"}`}
+                        onClick={addOrRemoveFromList}
+                    >
+                        {isInList ? "Leave List" : "Join List"}
+                    </button>
+
+                    {/* Question number input form with same width and height as the button */}
+                    <input 
+                        type="text"
+                        placeholder="Enter Question"
+                        value={questionNumber}
+                        onChange={(e) => setQuestionNumber(e.target.value)}
+                        className="input input-bordered w-full max-w-3xl h-12" // Same width and height as the button
+                    />
+                </div>
             </div>
+
             <div className="flex gap-5">
                 <button 
                     className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-red-600" 
