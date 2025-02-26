@@ -5,5 +5,6 @@ const CreateRoomPage = () => {
         </div>
     )
 };
+// have a set room name
 
 export default CreateRoomPage;

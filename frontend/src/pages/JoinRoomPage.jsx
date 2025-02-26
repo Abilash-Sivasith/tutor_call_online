@@ -31,7 +31,7 @@ const JoinRoomPage = () => {
       },
       onSuccess: () => {
         toast.success("Room joined successfully");
-        navigate("/InRoomPage");
+        navigate("/InRoomPage", { state: { roomId: formData.roomId, username: formData.username } });
       },
       onError: (error) => {
         toast.error(error.message || "Failed to join room");
