@@ -38,22 +38,24 @@ export const getRoom = async (req, res) => {
 export const createRoom = async (req, res) => {
     {
         try {
-            const {uName} =  req.body;
-            if (!uName) {
+            const {userName, roomTitle } =  req.body;
+            if (!userName) {
                 return res.status(400).json({ error: "UserId is required" });
             }
+            if (!roomTitle) {
+                return res.status(400).json({error: "roomTitle is requied"});
+            }
 
-            const newUser = new User({
-                UserId: uName,
-            });
-            console.log(newUser)
-            await newUser.save();
             let uniqueRoomId = uniqueRoomIdGenerator();
             const newRoom = new Room({
                 RoomId: uniqueRoomId,
-                Owner: newUser._id,
+                Owner: userName,
+                RoomDescription: roomTitle,
             });
+
+
             await newRoom.save();
+            console.log(newRoom)
             res.status(201).json({RoomId: newRoom.RoomId, Owner: newRoom.Owner})
         } catch (error) {   
             console.log("Error in createRoom: ", error.message);

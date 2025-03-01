@@ -41,8 +41,8 @@ const InRoomPage = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen">
             <div className="flex flex-col gap-4 py-10 mt-10">
-                <h1 className="text-2xl">Welcome to InRoomPage</h1>
-                <h2 className="text-center">roomId: {roomId}</h2>
+                <h1 className="text-2xl text-center">Welcome to InRoomPage</h1>
+                <h1 className="text-center text-2xl">roomId: {roomId}</h1>
             </div>
             <div className="flex flex-col gap-4 py-10 w-full max-w-3xl">
                 {/* Scrollable pane with a wider table */}

@@ -7,6 +7,12 @@ const roomSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        RoomDescription: {
+            type: String
+        },
+        RoomOwner: {
+            type: String
+        },
         InRoom: [{
             type: String,
             default: []

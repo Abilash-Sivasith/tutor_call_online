@@ -12,7 +12,7 @@ app.use(express.json()) // to parse req.body (middle layer)
 app.use(express.urlencoded({extended: true})); //  to parse form data(urlencoded)
 
 import {createRoom, getRoom, deleteRoom} from "./controllers/newRoom.controller.js";
-import { getInWaitlist, getInRoomList } from "./controllers/room.controller.js";
+import { getInWaitlist, getInRoomList, getRoomDescription } from "./controllers/room.controller.js";
 
 const router = express.Router();
 
@@ -21,6 +21,7 @@ router.post("/getRoom", getRoom); // when joining room
 router.post("/deleteRoom/:roomId", deleteRoom)
 router.get("/getInWaitlist", getInWaitlist);
 router.get("/getInRoomList", getInRoomList);
+router.get("/getRoomDescription", getRoomDescription)
 
 app.use("/api", router);
 
