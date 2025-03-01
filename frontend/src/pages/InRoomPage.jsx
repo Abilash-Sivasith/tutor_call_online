@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const InRoomPage = () => {
     const navigate = useNavigate();
@@ -10,15 +10,55 @@ const InRoomPage = () => {
         { username: "lhe145", question: "3c" },
         { username: "jkl123", question: "1b" },
         { username: "xyz789", question: "2d" },
-        { username: "pqr456", question: "5e"},
-        { username: "uvw111", question: "6f"},
-        { username: "stu222", question: "7g"},
-        { username: "vwx333", question: "8h"}, // 8th item (triggers scrolling)
+        { username: "pqr456", question: "5e" },
+        { username: "uvw111", question: "6f" },
+        { username: "stu222", question: "7g" },
+        { username: "vwx333", question: "8h" }, // 8th item (triggers scrolling)
     ]);
 
     const location = useLocation();
     const { roomId, username } = location.state || {}; // Get the passed state from the previous page
     const myUsername = username;
+    const currentRoomCode = roomId;
+
+    const RoomDescription = ({ currentRoomCode }) => {
+        const [roomDescription, setRoomDescription] = useState('');
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+    
+        useEffect(() => {
+            const fetchRoomDescription = async () => {
+                try {
+                    const response = await fetch(`/api/getRoomDescription?RoomId=${currentRoomCode}`);
+                    if (!response.ok) {
+                        throw new Error('Room not found');
+                    }
+                    const data = await response.json();
+                    setRoomDescription(data.roomTitle); // Save room description
+                    setLoading(false);
+                } catch (error) {
+                    setError(error.message);
+                    setLoading(false);
+                }
+            };
+    
+            fetchRoomDescription();
+        }, [currentRoomCode]); // Only run when currentRoomCode changes
+    
+        if (loading) {
+            return <div>Loading...</div>;
+        }
+    
+        if (error) {
+            return <div>Error: {error}</div>;
+        }
+    
+        return (
+            <div>
+                <h1 className="text-2xl text-center">{roomDescription}</h1>
+            </div>
+        );
+    };
 
     const isInList = tempUserList.some(entry => entry.username === myUsername);
 
@@ -41,7 +81,8 @@ const InRoomPage = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen">
             <div className="flex flex-col gap-4 py-10 mt-10">
-                <h1 className="text-2xl text-center">Welcome to InRoomPage</h1>
+
+                <RoomDescription currentRoomCode={currentRoomCode}/>
                 <h1 className="text-center text-2xl">roomId: {roomId}</h1>
             </div>
             <div className="flex flex-col gap-4 py-10 w-full max-w-3xl">
