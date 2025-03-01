@@ -16,8 +16,8 @@ import { getInWaitlist, getInRoomList, getRoomDescription } from "./controllers/
 
 const router = express.Router();
 
-router.post("/createRoom", createRoom); // when creating a new room
-router.post("/getRoom", getRoom); // when joining room
+router.post("/createRoom", createRoom);
+router.post("/getRoom", getRoom);
 router.post("/deleteRoom/:roomId", deleteRoom)
 router.get("/getInWaitlist", getInWaitlist);
 router.get("/getInRoomList", getInRoomList);

@@ -1,4 +1,3 @@
-import User from "../models/user.model.js";
 import Room from "../models/room.model.js";
 import {uniqueRoomIdGenerator} from "../logic/uniqueRoomId.logic.js"
 
@@ -53,10 +52,10 @@ export const createRoom = async (req, res) => {
                 RoomDescription: roomTitle,
             });
 
-
+            console.log(newRoom);
             await newRoom.save();
             console.log(newRoom)
-            res.status(201).json({RoomId: newRoom.RoomId, Owner: newRoom.Owner})
+            return res.status(201).json({userName: userName, roomTitle: roomTitle});
         } catch (error) {   
             console.log("Error in createRoom: ", error.message);
             res.status(500).json({error: error.message});
@@ -70,8 +69,6 @@ export const deleteRoom = async (req, res) => {
             const {roomId} = req.body;
             const room = await Room.deleteOne({ roomId});
             res.status(200).json({message: "Room deleted successfully"})
-            // console.log("hit deleteRoom endpoint");
-            // res.json({data: "You hit the deleteRoom endpoint"});
         } catch (error) {
             res.status(500).json({error: error.message});
         }
