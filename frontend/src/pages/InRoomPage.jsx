@@ -23,7 +23,6 @@ const InRoomPage = () => {
 
     const RoomDescription = ({ currentRoomCode }) => {
         const [roomDescription, setRoomDescription] = useState('');
-        const [loading, setLoading] = useState(true);
         const [error, setError] = useState(null);
     
         useEffect(() => {
@@ -35,20 +34,13 @@ const InRoomPage = () => {
                     }
                     const data = await response.json();
                     setRoomDescription(data.roomTitle); // Save room description
-                    setLoading(false);
                 } catch (error) {
                     setError(error.message);
-                    setLoading(false);
                 }
             };
-    
             fetchRoomDescription();
-        }, [currentRoomCode]); // Only run when currentRoomCode changes
-    
-        if (loading) {
-            return <div>Loading...</div>;
-        }
-    
+        }); // Only run when currentRoomCode changes
+
         if (error) {
             return <div>Error: {error}</div>;
         }
@@ -81,13 +73,12 @@ const InRoomPage = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen">
             <div className="flex flex-col gap-4 py-10 mt-10">
-
                 <RoomDescription currentRoomCode={currentRoomCode}/>
                 <h1 className="text-center text-2xl">roomId: {roomId}</h1>
             </div>
-            <div className="flex flex-col gap-4 py-10 w-full max-w-3xl">
+            <div className="flex flex-col gap-4 w-full max-w-3xl">
                 {/* Scrollable pane with a wider table */}
-                <div className="overflow-y-auto max-h-100 border border-gray-300 rounded-lg w-full">
+                <div className="overflow-y-auto max-h-80 border border-gray-300 rounded-lg w-full">
                     <table className="table w-full min-w-[600px]">
                         <thead>
                             <tr>
@@ -120,24 +111,21 @@ const InRoomPage = () => {
                         {isInList ? "Leave List" : "Join List"}
                     </button>
 
-                    {/* Question number input form with same width and height as the button */}
                     <input 
                         type="text"
                         placeholder="Enter Question"
                         value={questionNumber}
                         onChange={(e) => setQuestionNumber(e.target.value)}
-                        className="input input-bordered w-full max-w-3xl h-12" // Same width and height as the button
+                        className="input input-bordered w-full max-w-3xl h-12" 
                     />
                 </div>
+                <button className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-red-600" onClick={() => navigate("/")}>
+                    Leave Room
+                </button>
             </div>
 
             <div className="flex gap-5">
-                <button 
-                    className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-red-600" 
-                    onClick={() => navigate("/")}
-                >
-                    Leave Room
-                </button>
+
             </div>
         </div>
     );

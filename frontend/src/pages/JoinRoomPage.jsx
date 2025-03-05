@@ -13,20 +13,24 @@ const JoinRoomPage = () => {
 
     const { mutate: joinRoomMutation, isError, isPending, error } = useMutation({
       mutationFn: async ({ roomId, username }) => {
-        const res = await fetch("/api/getRoom", {
+        const res =  await fetch("/api/getRoom", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ roomId, username }),
         });
+
+        const data = await res.json();
+        console.log(data);
     
         if (!res.ok) {
           const errorData = await res.json();
           throw new Error(errorData?.message || "Failed to join the room");
         }
+
     
-        return res.json();
+        return data;
       },
       onSuccess: () => {
         toast.success("Room joined successfully");
