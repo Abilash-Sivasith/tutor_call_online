@@ -107,8 +107,10 @@ export const joinInWaitlist = async (req, res) => {
         }
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: roomId },
-            { $addToSet: { InWaitlist: user._id } },
-            { new: true });
+            { $pull: { InWaitlist: user._id } },  // Removes user._id from InWaitlist
+            { new: true } // Returns the updated document
+        );
+
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
         }
@@ -121,3 +123,36 @@ export const joinInWaitlist = async (req, res) => {
     }
 };
 
+export const leaveInWaitlist = async (req, res) => {
+    try {
+        const { username, roomId } = req.body;
+        if (!username || !roomId) {
+            return res.status(400).json({ message: "Username and Room ID are required" });
+        }
+
+        console.log("Username -->", username);
+        console.log("RoomId -->", roomId);
+
+        const user = await User.findOne({ UserId: username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const updatedRoom = await Room.findOneAndUpdate(
+            { RoomId: roomId },  // Extracting RoomId correctly
+            { $pull: { InWaitlist: user._id } },
+            { new: true }
+        );
+
+        console.log("Updated Room -->", updatedRoom);
+        if (!updatedRoom) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        return res.status(200).json({ message: "User joined the waitlist successfully -->", room: updatedRoom });
+
+    } catch (error) {
+        console.log("Error in leaveInWaitlist: ", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+};
