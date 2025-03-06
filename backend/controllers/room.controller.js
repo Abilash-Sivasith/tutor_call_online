@@ -1,11 +1,11 @@
 import Room from "../models/room.model.js";
+import User from "../models/user.model.js";
 
 // This function assumes that you want to get the users in the InWaitlist.
 export const getInWaitlist = async (req, res) => {
     try {
         // console.log(req.query);
         const roomCode = req.query.RoomId;
-        console.log("The roomCode is --> " + roomCode);
 
         const room = await Room.findOne({ RoomId: roomCode });
 
@@ -66,3 +66,31 @@ export const getRoomDescription = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
+
+export const joinInRoom = async (req, res) => {
+    try {
+        const { username, roomId } = req.body;
+        const user = await User.findOne({ UserId: username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Add user to InRoom if not already present
+        const updatedRoom = await Room.findOneAndUpdate(
+            { RoomId: roomId }, 
+            { $addToSet: { InRoom: user._id } }, // Prevent duplicate entries
+            { new: true } // Return updated room
+        ).populate("InRoom"); // Populate InRoom with user details
+
+        if (!updatedRoom) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        return res.status(200).json({ message: "User joined successfully", room: updatedRoom });
+
+    } catch (error) {
+        console.log("Error in getRoom: ", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+}
+
