@@ -70,7 +70,11 @@ export const getRoomDescription = async (req, res) => {
 export const joinInRoom = async (req, res) => {
     try {
         const { username, roomId } = req.body;
-        const user = await User.findOne({ UserId: username });
+        let doesUsernameAlreadyExist = await User.findOne({ UserId: username});
+        if (doesUsernameAlreadyExist) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+        const user = await User.create({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -86,11 +90,34 @@ export const joinInRoom = async (req, res) => {
             return res.status(404).json({ message: "Room not found" });
         }
 
-        return res.status(200).json({ message: "User joined successfully", room: updatedRoom });
+        return res.status(200).json({ message: "User joined the room successfully -->", room: updatedRoom });
 
     } catch (error) {
         console.log("Error in getRoom: ", error.message);
         return res.status(500).json({ error: error.message });
     }
 }
+
+export const joinInWaitlist = async (req, res) => {
+    try {
+        const { username, roomId } = req.body;
+        const user = await User.findOne({ UserId: username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const updatedRoom = await Room.findOneAndUpdate(
+            { RoomId: roomId },
+            { $addToSet: { InWaitlist: user._id } },
+            { new: true });
+        if (!updatedRoom) {
+            return res.status(404).json({ message: "Room not found" });
+        }
+
+        return res.status(200).json({ message: "User joined the waitlist successfully -->", room: updatedRoom });
+        
+    } catch (error) {
+        console.log("Error in joinInWaitlist: ", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+};
 
