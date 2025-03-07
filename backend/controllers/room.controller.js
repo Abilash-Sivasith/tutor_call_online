@@ -72,7 +72,7 @@ export const joinInRoom = async (req, res) => {
         const { username, roomId } = req.body;
         let doesUsernameAlreadyExist = await User.findOne({ UserId: username});
         if (doesUsernameAlreadyExist) {
-            return res.status(400).json({ message: "User already exists" });
+            return res.status(400).json({ message: "User already exists in this room. Please select a new username" });
         }
         const user = await User.create({ UserId: username });
         if (!user) {
@@ -90,8 +90,12 @@ export const joinInRoom = async (req, res) => {
             return res.status(404).json({ message: "Room not found" });
         }
 
-        return res.status(200).json({ message: "User joined the room successfully -->", room: updatedRoom });
-
+        return res.status(200).json({
+            RoomId: updatedRoom.roomId,
+            RoomDescription: updatedRoom.RoomDescription,
+            InRoom: updatedRoom.InRoom,
+            InWaitlist: updatedRoom.InWaitlist,
+        });
     } catch (error) {
         console.log("Error in getRoom: ", error.message);
         return res.status(500).json({ error: error.message });
