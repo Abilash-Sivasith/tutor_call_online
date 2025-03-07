@@ -4,30 +4,22 @@ import { useState, useEffect } from "react";
 const InRoomPage = () => {
     const navigate = useNavigate();
 
+    // Use state to track the user list
+    const [tempUserList, setTempUserList] = useState([
+        { username: "asi160", question: "3a" },
+        { username: "lhe145", question: "3c" },
+        { username: "jkl123", question: "1b" },
+        { username: "xyz789", question: "2d" },
+        { username: "pqr456", question: "5e" },
+        { username: "uvw111", question: "6f" },
+        { username: "stu222", question: "7g" },
+        { username: "vwx333", question: "8h" }, // 8th item (triggers scrolling)
+    ]);
 
     const location = useLocation();
     const { roomId, username } = location.state || {}; // Get the passed state from the previous page
     const myUsername = username;
     const currentRoomCode = roomId;
-
-        // loads actual users into the table
-        const [userList, setUserList] = useState([]);
-        useEffect(() => {
-            const fetchUserList = async () => {
-                try {
-                    const response = await fetch(`/api/getInRoomList?RoomId=${currentRoomCode}`);
-                    if (!response.ok) {
-                        throw new Error('Room not found');
-                    }
-                    const data = await response.json();
-                    setUserList(data);
-                } catch (error) {
-                    console.error(error);
-                }
-            };
-            fetchUserList();
-        }, [currentRoomCode]);
-    
 
     const RoomDescription = ({ currentRoomCode }) => {
         const [roomDescription, setRoomDescription] = useState('');
@@ -60,25 +52,17 @@ const InRoomPage = () => {
         );
     };
 
-    console.log(userList);
+    const isInList = tempUserList.some(entry => entry.username === myUsername);
 
-    const isInList = function (userList, myUsername) {
-        for (let i = 0; i < userList.length; i++) {
-            if (userList[i].username === myUsername) {
-                return true;
-            }
-        }
-        return false;
-    }
     const [questionNumber, setQuestionNumber] = useState(""); // New state for question number input
 
     const addOrRemoveFromList = () => {
         if (isInList) {
             // Remove the user from the list
-            userList(prevList => prevList.filter(user => user.username !== myUsername));
+            setTempUserList(prevList => prevList.filter(user => user.username !== myUsername));
         } else {
             // Add the user to the list with the entered question number
-            userList(prevList => [
+            setTempUserList(prevList => [
                 ...prevList,
                 { username: myUsername, question: questionNumber || "No question" } // Default if no question is entered
             ]);
@@ -104,7 +88,7 @@ const InRoomPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {userList.map((entry, index) => (
+                            {tempUserList.map((entry, index) => (
                                 <tr 
                                     key={index}
                                     className={entry.username === myUsername ? "bg-blue-100" : ""}
