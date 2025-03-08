@@ -52,6 +52,67 @@ const InRoomPage = () => {
         );
     };
 
+    function WaitlistComponent({ roomId }) {
+        const [waitlist, setWaitlist] = useState([]);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+      
+        useEffect(() => {
+          const fetchWaitlist = async () => {
+            try {
+              setLoading(true);
+              // Make the API call to your endpoint
+              const response = await fetch(`/api/getInWaitlist?RoomId=${currentRoomCode}`);
+              
+              if (!response.ok) {
+                throw new Error('Failed to fetch waitlist');
+              }
+              
+              const data = await response.json();
+              setWaitlist(data.roomWaitlist);
+            } catch (err) {
+              setError(err.message);
+              console.error('Error fetching waitlist:', err);
+            } finally {
+              setLoading(false);
+            }
+          };
+      
+          if (roomId) {
+            fetchWaitlist();
+          }
+        }, [roomId]); // Re-fetch when roomId changes
+      
+        if (loading) return <p>Loading waitlist...</p>;
+        if (error) return <p>Error: {error}</p>;
+      
+        return (
+            <div className="waitlist-container">
+              {waitlist.length === 0 ? (
+                <p className="">No one is in the waitlist.</p>
+              ) : (
+                <table className="waitlist-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Person</th>
+                      <th>Question</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {waitlist.map((person, index) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{person}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          );
+        }        
+
     const isInList = tempUserList.some(entry => entry.username === myUsername);
 
     const [questionNumber, setQuestionNumber] = useState(""); // New state for question number input
@@ -79,27 +140,7 @@ const InRoomPage = () => {
             <div className="flex flex-col gap-4 w-full max-w-3xl">
                 {/* Scrollable pane with a wider table */}
                 <div className="overflow-y-auto max-h-80 border border-gray-300 rounded-lg w-full">
-                    <table className="table w-full min-w-[600px]">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Question</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tempUserList.map((entry, index) => (
-                                <tr 
-                                    key={index}
-                                    className={entry.username === myUsername ? "bg-blue-100" : ""}
-                                >
-                                    <th>{index + 1}</th>
-                                    <td>{entry.username}</td>
-                                    <td>{entry.question}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <WaitlistComponent roomId={roomId} />
                 </div>
 
                 {/* Flex container for Join/Leave button and Question Number input */}
