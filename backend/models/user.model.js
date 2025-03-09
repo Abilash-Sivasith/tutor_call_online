@@ -5,7 +5,6 @@ const UserSchema = new mongoose.Schema(
         UserId: {
             type: String,
             required: true,
-            unique: true,
         },
         Question: { 
             type: String, 

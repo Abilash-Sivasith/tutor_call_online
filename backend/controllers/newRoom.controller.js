@@ -19,9 +19,12 @@ export const getRoom = async (req, res) => {
         if (!room) {
             return res.status(404).json({ message: "Room not found" });
         }
+
+        console.log("Roomn --> ", room);
         
         return res.status(200).json({
-            RoomId: room.roomId,
+            RoomId: roomId,
+            Username: username,
             RoomDescription: room.RoomDescription,
             InRoom: room.InRoom,
             InWaitlist: room.InWaitlist,
@@ -47,7 +50,7 @@ export const createRoom = async (req, res) => {
             let uniqueRoomId = uniqueRoomIdGenerator();
             const newRoom = new Room({
                 RoomId: uniqueRoomId,
-                Owner: userName,
+                RoomOwner: userName,
                 RoomDescription: roomTitle,
             });
 

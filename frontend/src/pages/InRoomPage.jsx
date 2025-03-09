@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import WaitlistComponent from "./common/components/waitlist.jsx";
 
 const InRoomPage = () => {
     const navigate = useNavigate();
@@ -21,10 +22,11 @@ const InRoomPage = () => {
     const myUsername = username;
     const currentRoomCode = roomId;
 
+    // Fetch room description component
     const RoomDescription = ({ currentRoomCode }) => {
         const [roomDescription, setRoomDescription] = useState('');
         const [error, setError] = useState(null);
-    
+
         useEffect(() => {
             const fetchRoomDescription = async () => {
                 try {
@@ -38,80 +40,23 @@ const InRoomPage = () => {
                     setError(error.message);
                 }
             };
-            fetchRoomDescription();
-        }); // Only run when currentRoomCode changes
+
+            // Only run when currentRoomCode changes
+            if (currentRoomCode) {
+                fetchRoomDescription();
+            }
+        }, [currentRoomCode]); // Added dependency array to run only on room code change
 
         if (error) {
             return <div>Error: {error}</div>;
         }
-    
+
         return (
             <div>
                 <h1 className="text-2xl text-center">{roomDescription}</h1>
             </div>
         );
     };
-
-    function WaitlistComponent({ roomId }) {
-        const [waitlist, setWaitlist] = useState([]);
-        const [loading, setLoading] = useState(true);
-        const [error, setError] = useState(null);
-      
-        useEffect(() => {
-          const fetchWaitlist = async () => {
-            try {
-              setLoading(true);
-              // Make the API call to your endpoint
-              const response = await fetch(`/api/getInWaitlist?RoomId=${currentRoomCode}`);
-              
-              if (!response.ok) {
-                throw new Error('Failed to fetch waitlist');
-              }
-              
-              const data = await response.json();
-              setWaitlist(data.roomWaitlist);
-            } catch (err) {
-              setError(err.message);
-              console.error('Error fetching waitlist:', err);
-            } finally {
-              setLoading(false);
-            }
-          };
-      
-          if (roomId) {
-            fetchWaitlist();
-          }
-        }, [roomId]); // Re-fetch when roomId changes
-      
-        if (loading) return <p>Loading waitlist...</p>;
-        if (error) return <p>Error: {error}</p>;
-      
-        return (
-            <div className="waitlist-container">
-              {waitlist.length === 0 ? (
-                <p className="">No one is in the waitlist.</p>
-              ) : (
-                <table className="waitlist-table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Person</th>
-                      <th>Question</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {waitlist.map((person, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{person}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          );
-        }        
 
     const isInList = tempUserList.some(entry => entry.username === myUsername);
 
@@ -122,6 +67,12 @@ const InRoomPage = () => {
             // Remove the user from the list
             setTempUserList(prevList => prevList.filter(user => user.username !== myUsername));
         } else {
+            // Validate question number before adding
+            if (!questionNumber.trim()) {
+                alert("Please enter a valid question number.");
+                return;
+            }
+
             // Add the user to the list with the entered question number
             setTempUserList(prevList => [
                 ...prevList,
@@ -134,13 +85,14 @@ const InRoomPage = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen">
             <div className="flex flex-col gap-4 py-10 mt-10">
-                <RoomDescription currentRoomCode={currentRoomCode}/>
+                <RoomDescription currentRoomCode={currentRoomCode} />
                 <h1 className="text-center text-2xl">roomId: {roomId}</h1>
             </div>
             <div className="flex flex-col gap-4 w-full max-w-3xl">
                 {/* Scrollable pane with a wider table */}
                 <div className="overflow-y-auto max-h-80 border border-gray-300 rounded-lg w-full">
-                    <WaitlistComponent roomId={roomId} />
+                    {/* WaitlistComponent is already integrated here */}
+                    <WaitlistComponent username={username} />
                 </div>
 
                 {/* Flex container for Join/Leave button and Question Number input */}
@@ -163,10 +115,6 @@ const InRoomPage = () => {
                 <button className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-red-600" onClick={() => navigate("/")}>
                     Leave Room
                 </button>
-            </div>
-
-            <div className="flex gap-5">
-
             </div>
         </div>
     );

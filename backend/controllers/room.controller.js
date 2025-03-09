@@ -33,7 +33,6 @@ export const getUserDetails = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        console.log("User -->" + user);
         return res.status(200).json({ user });
 
     } catch (error) {
@@ -124,18 +123,20 @@ export const joinInRoom = async (req, res) => {
 export const joinInWaitlist = async (req, res) => {
     try {
         const { username, roomId } = req.body;
+        console.log("roomId --> ", roomId);
+
         const user = await User.findOne({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        user.PositionInList = room.InWaitlist.length + 1;
-
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: roomId },
-            { $pull: { InWaitlist: user._id } },  // Removes user._id from InWaitlist
+            { $push: { InWaitlist: user._id } },  // Removes user._id from InWaitlist
             { new: true } // Returns the updated document
         );
+
+        user.PositionInList = updatedRoom.InWaitlist.length + 1;
 
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
