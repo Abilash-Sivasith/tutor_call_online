@@ -13,10 +13,7 @@ export const getRoom = async (req, res) => {
             return res.status(400).json({ message: "Username not entered" });
         }
 
-        const room = await Room.findOneAndUpdate( 
-            {RoomId: roomId} ,
-            { $push: { InRoom: username } }
-        );
+        const room = await Room.findOne({ RoomId: roomId });
 
         if (!room) {
             return res.status(404).json({ message: "Room not found" });
@@ -24,6 +21,7 @@ export const getRoom = async (req, res) => {
         
         return res.status(200).json({
             RoomId: room.roomId,
+            RoomDescription: room.RoomDescription,
             InRoom: room.InRoom,
             InWaitlist: room.InWaitlist,
         });

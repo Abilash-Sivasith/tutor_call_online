@@ -14,11 +14,13 @@ const roomSchema = new mongoose.Schema(
             type: String
         },
         InRoom: [{
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
             default: []
         }],
         InWaitlist: [{
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
             default: []
         }]
     }

@@ -7,9 +7,10 @@ const UserSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
-        timeInList: { 
-            type: Number, 
-            default: () => Date.now() } 
+        Question: { 
+            type: String, 
+            default: null,
+        } 
     });
     
 const User = mongoose.model("User", UserSchema);
