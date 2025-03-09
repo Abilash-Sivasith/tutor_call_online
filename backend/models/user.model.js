@@ -10,7 +10,11 @@ const UserSchema = new mongoose.Schema(
         Question: { 
             type: String, 
             default: null,
-        } 
+        },
+        PositionInList: {
+            type: Number,
+            default: null,
+        }
     });
     
 const User = mongoose.model("User", UserSchema);

@@ -25,6 +25,24 @@ export const getInWaitlist = async (req, res) => {
     }
 }
 
+export const getUserDetails = async (req, res) => {
+    try {
+        const usercode = req.query.usercode;
+        console.log("The usercode is --> " + usercode);
+        const user = await User.findById(usercode);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        console.log("User -->" + user);
+        return res.status(200).json({ user });
+
+    } catch (error) {
+        console.log("Error in getUserDetails --> " + error);
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+
 export const getInRoomList = async (req, res) => {
     try {
         const roomCode = req.query.RoomId;
@@ -70,10 +88,11 @@ export const getRoomDescription = async (req, res) => {
 export const joinInRoom = async (req, res) => {
     try {
         const { username, roomId } = req.body;
-        let doesUsernameAlreadyExist = await User.findOne({ UserId: username});
-        if (doesUsernameAlreadyExist) {
+        let inRoom = await Room.findOne({ RoomId: roomId });
+        if (inRoom.InRoom.includes(username)) {
             return res.status(400).json({ message: "User already exists in this room. Please select a new username" });
         }
+
         const user = await User.create({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -109,6 +128,9 @@ export const joinInWaitlist = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+
+        user.PositionInList = room.InWaitlist.length + 1;
+
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: roomId },
             { $pull: { InWaitlist: user._id } },  // Removes user._id from InWaitlist
