@@ -10,13 +10,12 @@ function WaitlistComponent({ username, roomId }) {
       try {
         // Fetch the waitlist based on roomId
         const response = await fetch(`/api/getInWaitlist?RoomId=${roomId}`);
-        
+        console.log("inWiatlist -->", response);
         if (!response.ok) {
           throw new Error('Failed to fetch waitlist');
         }
 
         const data = await response.json();
-        console.log("Waitlist data --> ", data);
         setWaitlist(data.roomWaitlist);
       } catch (err) {
         console.error('Error fetching waitlist:', err);
@@ -31,14 +30,14 @@ function WaitlistComponent({ username, roomId }) {
   // Function to fetch user details for a given UserId
   const fetchUserDetails = async (userId) => {
     try {
-      const response = await fetch(`/api/getUserDetails?username=${username}`);
+      const response = await fetch(`/api/getUserDetails?username=${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch user details');
       }
       const data = await response.json();
       setUserDetails((prevDetails) => ({
         ...prevDetails,
-        [userId]: data.user, // Store details by UserId
+        [userId]: data.user,
       }));
     } catch (err) {
       console.error('Error fetching user details:', err);
@@ -48,7 +47,7 @@ function WaitlistComponent({ username, roomId }) {
   // Function to fetch user details for all users in the waitlist
   const fetchAllUserDetails = async () => {
     for (const person of waitlist) {
-      await fetchUserDetails(person.UserId); // Fetch user details using UserId
+      await fetchUserDetails(person); // Fetch user details using UserId
     }
   };
 
@@ -74,7 +73,8 @@ function WaitlistComponent({ username, roomId }) {
           </thead>
           <tbody>
             {waitlist.map((person, index) => {
-              const user = userDetails[person.UserId];
+              console.log("userDetais about person--> ", userDetails[person]);
+              const user = userDetails[person];
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>

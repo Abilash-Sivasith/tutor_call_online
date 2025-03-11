@@ -28,7 +28,7 @@ export const getInWaitlist = async (req, res) => {
 export const getUserDetails = async (req, res) => {
     try {
         const username = req.query.username;
-        const user = await User.findOne({ UserId: username });
+        const user = await User.findById(username);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -118,6 +118,25 @@ export const joinInRoom = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
+
+/**
+ * used when you leave the room
+ * delete the user so that the username can be used in a different room
+ * @returns message saying the room was left succesfully
+ */
+export const leaveRoom = async (req, res) => {
+    try {
+        username = req.params.username;
+        user = await User.findOneAndDelete({ UserId: username });
+        return res.status(200).json({ message: "left room successfully"});
+
+    } catch (error) {
+        console.log("Error in leaveRoom: ", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+}
+
+
 
 export const joinInWaitlist = async (req, res) => {
     try {
