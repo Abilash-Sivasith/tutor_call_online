@@ -73,7 +73,7 @@ function WaitlistComponent({ username, roomId }) {
           </thead>
           <tbody>
             {waitlist.map((person, index) => {
-              console.log("userDetais about person--> ", userDetails[person]);
+              // console.log("userDetais about person--> ", userDetails[person]);
               const user = userDetails[person];
               return (
                 <tr key={index}>

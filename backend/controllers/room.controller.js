@@ -126,9 +126,10 @@ export const joinInRoom = async (req, res) => {
  */
 export const leaveRoom = async (req, res) => {
     try {
-        username = req.params.username;
-        user = await User.findOneAndDelete({ UserId: username });
-        return res.status(200).json({ message: "left room successfully"});
+        const usersname = req.query.username;
+        console.log("username in leaveRoom --> ", usersname);
+        const user = await User.findOneAndDelete({ UserId: usersname });
+        return res.status(200).json({ message: `User ${usersname} left room successfully`});
 
     } catch (error) {
         console.log("Error in leaveRoom: ", error.message);
