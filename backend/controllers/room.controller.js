@@ -27,9 +27,8 @@ export const getInWaitlist = async (req, res) => {
 
 export const getUserDetails = async (req, res) => {
     try {
-        const usercode = req.query.usercode;
-        console.log("The usercode is --> " + usercode);
-        const user = await User.findById(usercode);
+        const username = req.query.username;
+        const user = await User.findOne({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }

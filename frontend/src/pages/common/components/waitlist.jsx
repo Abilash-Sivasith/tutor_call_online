@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import "../../common/css/waitlist.css";
 
-function WaitlistComponent({ roomId }) {
+function WaitlistComponent({ username, roomId }) {
   const [waitlist, setWaitlist] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [userDetails, setUserDetails] = useState({});
-  const [userLoading, setUserLoading] = useState(true); // Track user details loading
 
   useEffect(() => {
     const fetchWaitlist = async () => {
       try {
-        setLoading(true);
         // Fetch the waitlist based on roomId
         const response = await fetch(`/api/getInWaitlist?RoomId=${roomId}`);
         
@@ -19,12 +16,10 @@ function WaitlistComponent({ roomId }) {
         }
 
         const data = await response.json();
+        console.log("Waitlist data --> ", data);
         setWaitlist(data.roomWaitlist);
       } catch (err) {
-        setError(err.message);
         console.error('Error fetching waitlist:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -33,17 +28,17 @@ function WaitlistComponent({ roomId }) {
     }
   }, [roomId]); // Re-fetch when roomId changes
 
-  // Function to fetch user details for a given usercode
-  const fetchUserDetails = async (usercode) => {
+  // Function to fetch user details for a given UserId
+  const fetchUserDetails = async (userId) => {
     try {
-      const response = await fetch(`/api/getUserDetails?usercode=${usercode}`);
+      const response = await fetch(`/api/getUserDetails?username=${username}`);
       if (!response.ok) {
         throw new Error('Failed to fetch user details');
       }
       const data = await response.json();
       setUserDetails((prevDetails) => ({
         ...prevDetails,
-        [usercode]: data.user,
+        [userId]: data.user, // Store details by UserId
       }));
     } catch (err) {
       console.error('Error fetching user details:', err);
@@ -52,28 +47,19 @@ function WaitlistComponent({ roomId }) {
 
   // Function to fetch user details for all users in the waitlist
   const fetchAllUserDetails = async () => {
-    setUserLoading(true);
-    // Fetch details for all users in the waitlist
-    for (const user of waitlist) {
-      await fetchUserDetails(user.UserId);
+    for (const person of waitlist) {
+      await fetchUserDetails(person.UserId); // Fetch user details using UserId
     }
-    setUserLoading(false);
   };
 
   useEffect(() => {
     if (waitlist.length > 0) {
-      // Fetch all user details once the waitlist is available
-      fetchAllUserDetails();
+      fetchAllUserDetails(); // Fetch details for all users in the waitlist
     }
   }, [waitlist]); // Only run when the waitlist changes
 
-  /** if (loading || userLoading) return <p>Loading waitlist...</p>;
-  if (error) return <p>Error: {error}</p>;
-
-  */
-
   return (
-    <div className="waitlist-container text-center mt-5 mb-5">
+    <div className="waitlist-container text-center">
       {waitlist.length === 0 ? (
         <p>No one is in the waitlist.</p>
       ) : (

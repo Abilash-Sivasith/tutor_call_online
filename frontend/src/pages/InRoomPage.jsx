@@ -91,8 +91,7 @@ const InRoomPage = () => {
             <div className="flex flex-col gap-4 w-full max-w-3xl">
                 {/* Scrollable pane with a wider table */}
                 <div className="overflow-y-auto max-h-80 border border-gray-300 rounded-lg w-full">
-                    {/* WaitlistComponent is already integrated here */}
-                    <WaitlistComponent username={username} />
+                    <WaitlistComponent username={username} roomId={roomId} />
                 </div>
 
                 {/* Flex container for Join/Leave button and Question Number input */}
