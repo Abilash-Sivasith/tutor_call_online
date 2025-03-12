@@ -10,7 +10,6 @@ function WaitlistComponent({ username, roomId }) {
       try {
         // Fetch the waitlist based on roomId
         const response = await fetch(`/api/getInWaitlist?RoomId=${roomId}`);
-        console.log("inWiatlist -->", response);
         if (!response.ok) {
           throw new Error('Failed to fetch waitlist');
         }

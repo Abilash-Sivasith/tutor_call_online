@@ -82,6 +82,21 @@ const InRoomPage = () => {
         setQuestionNumber(""); // Clear the input after adding or removing
     };
 
+    const leaveRoom = async (username) => {
+        try {
+            alert("hit leave room")
+            const responsce = await fetch(`/api/leaveRoom?username=${username}`, {method: 'POST'})
+            if (!responsce.ok) {
+                throw new Error("Error in deleting user");
+            }
+            navigate("/");
+        } catch (error) {
+            return;
+        }
+    
+
+    }
+
     return (
         <div className="flex flex-col justify-center items-center h-screen">
             <div className="flex flex-col gap-4 py-10 mt-10">
@@ -111,7 +126,7 @@ const InRoomPage = () => {
                         className="input input-bordered w-full max-w-3xl h-12" 
                     />
                 </div>
-                <button className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-red-600" onClick={() => navigate("/")}>
+                <button className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-red-600" onClick={() => leaveRoom(username)}>
                     Leave Room
                 </button>
             </div>
