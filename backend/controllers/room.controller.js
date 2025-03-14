@@ -82,24 +82,26 @@ export const getRoomDescription = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
-
+/**
+ * used when you join a room
+ * @returns the room 
+ */
 export const joinInRoom = async (req, res) => {
     try {
         const { username, roomId } = req.body;
         let inRoom = await Room.findOne({ RoomId: roomId });
-        if (inRoom.InRoom.includes(username)) {
-            return res.status(400).json({ message: "User already exists in this room. Please select a new username" });
+        if (!inRoom) {
+            return res.status(404).json({ message: "Room not found" });
         }
-
-        const user = await User.create({ UserId: username });
+        const user = await User.create({ UserId: username, inRoom: roomId });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "Something went wrong making the user" });
         }
 
         // Add user to InRoom if not already present
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: roomId }, 
-            { $addToSet: { InRoom: user._id } }, // Prevent duplicate entries
+            { $push: { InRoom: user._id } }, // Prevent duplicate entries
             { new: true } // Return updated room
         ).populate("InRoom"); // Populate InRoom with user details
 
@@ -119,23 +121,48 @@ export const joinInRoom = async (req, res) => {
     }
 }
 
-/**
- * used when you leave the room
- * delete the user so that the username can be used in a different room
- * @returns message saying the room was left succesfully
- */
 export const leaveRoom = async (req, res) => {
     try {
         const usersname = req.query.username;
         console.log("username in leaveRoom --> ", usersname);
+
+        // Fetch the user based on the username
+        const tempUser = await User.findOne({ UserId: usersname });
+
+        if (!tempUser) {
+            return res.status(404).json({ message: `User ${usersname} not found` });
+        }
+
+        // First, remove the user from the room's inRoom list
+        const updatedRoom = await Room.findOneAndUpdate(
+            { RoomId: tempUser.inRoom },  
+            { $pull: { InRoom: tempUser._id } },
+            { new: true }
+        );
+
+        if (!updatedRoom) {
+            return res.status(404).json({ message: "Room not found or user not in room" });
+        }
+
+        // Now, proceed to delete the user after being removed from the room
         const user = await User.findOneAndDelete({ UserId: usersname });
-        return res.status(200).json({ message: `User ${usersname} left room successfully`});
+
+        if (!user) {
+            return res.status(404).json({ message: `User ${usersname} deletion failed` });
+        }
+
+        // Send success response
+        return res.status(200).json({
+            room: updatedRoom,
+            message: `User ${usersname} left room and was deleted successfully`
+        });
 
     } catch (error) {
         console.log("Error in leaveRoom: ", error.message);
         return res.status(500).json({ error: error.message });
     }
 }
+
 
 
 
@@ -176,9 +203,6 @@ export const leaveInWaitlist = async (req, res) => {
             return res.status(400).json({ message: "Username and Room ID are required" });
         }
 
-        console.log("Username -->", username);
-        console.log("RoomId -->", roomId);
-
         const user = await User.findOne({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -190,7 +214,6 @@ export const leaveInWaitlist = async (req, res) => {
             { new: true }
         );
 
-        console.log("Updated Room -->", updatedRoom);
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
         }

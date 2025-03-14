@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema(
         PositionInList: {
             type: Number,
             default: null,
+        },
+        inRoom: {
+            type: String,
+            default: null
         }
     });
     
