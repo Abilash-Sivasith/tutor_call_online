@@ -83,10 +83,11 @@ const InRoomPage = () => {
     };
 
     const leaveRoom = async (username) => {
+        
         try {
             alert("hit leave room")
-            const responsceFromLeaveRoom = await fetch(`/api/leaveRoom?username=${username}`, {method: 'POST'});
-            if (!responsceFromLeaveRoom.ok || !responceFromLeaveInWaitlist.ok) {
+            const res = await fetch(`/api/leaveRoom?username=${username}`, {method: 'POST'});
+            if (!res.ok) {
                 throw new Error("Error in deleting user");
             }
             navigate("/");
