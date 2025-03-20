@@ -1,0 +1,8 @@
+.waitlist-table {
+    border-collapse: separate;
+    border-spacing: 10px; /* Adds space between columns */
+  }
+  
+  .waitlist-table th, .waitlist-table td {
+    padding: 10px 20px; /* Adds internal padding to cells */
+  }
