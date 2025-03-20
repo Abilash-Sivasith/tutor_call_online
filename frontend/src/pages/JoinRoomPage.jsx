@@ -69,7 +69,7 @@ const JoinRoomPage = () => {
             />
             <button 
               type="submit"
-              className='btn rounded-full btn-primary text-white w-full'
+              className="px-20 py-5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full" 
               disabled={isPending}
             >
               {isPending ? "Loading..." : "Join Room"}

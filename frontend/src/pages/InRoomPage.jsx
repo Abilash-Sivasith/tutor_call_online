@@ -58,14 +58,39 @@ const InRoomPage = () => {
         );
     };
 
+    // Check if user is already in the list
     const isInList = tempUserList.some(entry => entry.username === myUsername);
 
     const [questionNumber, setQuestionNumber] = useState(""); // New state for question number input
 
-    const addOrRemoveFromList = () => {
+    const addOrRemoveFromList = async () => {
         if (isInList) {
             // Remove the user from the list
             setTempUserList(prevList => prevList.filter(user => user.username !== myUsername));
+            
+            // Make the API call to leave the waitlist
+            try {
+                const response = await fetch('/api/leaveWaitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: myUsername,
+                        roomId: roomId,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('User left the waitlist:', data);
+                } else {
+                    console.error('Error:', data.message || 'An error occurred');
+                }
+            } catch (error) {
+                console.error('Error in leaving the waitlist:', error.message);
+            }
         } else {
             // Validate question number before adding
             if (!questionNumber.trim()) {
@@ -78,7 +103,32 @@ const InRoomPage = () => {
                 ...prevList,
                 { username: myUsername, question: questionNumber || "No question" } // Default if no question is entered
             ]);
+            
+            // Make the API call to join the waitlist
+            try {
+                const response = await fetch('/api/joinInWaitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: myUsername,
+                        roomId: roomId,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    console.log('User joined the waitlist:', data);
+                } else {
+                    console.error('Error:', data.message || 'An error occurred');
+                }
+            } catch (error) {
+                console.error('Error in joining the waitlist:', error.message);
+            }
         }
+
         setQuestionNumber(""); // Clear the input after adding or removing
     };
 
@@ -92,9 +142,7 @@ const InRoomPage = () => {
         } catch (error) {
             return;
         }
-    
-
-    }
+    };
 
     return (
         <div className="flex flex-col justify-center items-center h-screen">
@@ -114,7 +162,7 @@ const InRoomPage = () => {
                         className={`px-20 h-12 text-white rounded-lg whitespace-nowrap ${isInList ? "bg-orange-500 hover:bg-orange-600" : "bg-green-500 hover:bg-green-600"}`}
                         onClick={addOrRemoveFromList}
                     >
-                        {isInList ? "Leave List" : "Join List"}
+                        {isInList ? "Leave Waitlist" : "Join Waitlist"}
                     </button>
 
                     <input 

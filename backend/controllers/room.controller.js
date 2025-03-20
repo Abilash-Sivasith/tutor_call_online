@@ -183,6 +183,7 @@ export const joinInWaitlist = async (req, res) => {
         );
 
         user.PositionInList = updatedRoom.InWaitlist.length + 1;
+        user.Question = "No question";
 
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
