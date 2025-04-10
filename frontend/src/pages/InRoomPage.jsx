@@ -5,7 +5,7 @@ import WaitlistComponent from "./common/components/waitlist.jsx";
 const InRoomPage = () => {
     return (
         <div>
-            <h1 className="text-2xl">Welcome to InRoomPage</h1>
+            <h1 className="text-2xl">Welcome to room: </h1>
         </div>
     )
 }

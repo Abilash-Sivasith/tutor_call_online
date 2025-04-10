@@ -10,7 +10,7 @@
                         height={50}
                     />
                     <p>
-                    A Cubed Industries Ltd.
+                    A Cubed Industries
                     <br />
                     Providing reliable software since 2025
                     </p>
