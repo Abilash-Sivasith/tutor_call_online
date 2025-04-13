@@ -169,17 +169,20 @@ export const leaveRoom = async (req, res) => {
 export const joinInWaitlist = async (req, res) => {
     try {
         const { username, roomId } = req.body;
-        console.log("roomId --> ", roomId);
+
+        const room = Room.find({RoomId: roomId})
+        if (!room) {
+            return res.status(400).json({message: "room does not exsit"});
+        }
 
         const user = await User.findOne({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: roomId },
-            { $push: { InWaitlist: user._id } },  // Removes user._id from InWaitlist
-            { new: true } // Returns the updated document
+            { $push: { InWaitlist: user._id } }, 
+            { new: true }
         );
 
         user.PositionInList = updatedRoom.InWaitlist.length + 1;
