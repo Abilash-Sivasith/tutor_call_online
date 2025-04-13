@@ -93,6 +93,11 @@ export const joinInRoom = async (req, res) => {
         if (!inRoom) {
             return res.status(404).json({ message: "Room not found" });
         }
+        const userExists = await User.find({UserId: username});
+        if (userExists.length != 0) {
+            return res.status(400).json({message: "Username already taken"})
+        }
+
         const user = await User.create({ UserId: username, inRoom: roomId });
         if (!user) {
             return res.status(404).json({ message: "Something went wrong making the user" });
@@ -162,9 +167,6 @@ export const leaveRoom = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 }
-
-
-
 
 export const joinInWaitlist = async (req, res) => {
     try {

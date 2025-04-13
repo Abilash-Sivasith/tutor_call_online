@@ -30,7 +30,7 @@ const RoomDescription = ({ currentRoomCode }) => {
 
     return (
         <div>
-            <h1 className="text-2xl text-center">Welcome to room: {roomDescription}</h1>
+            <h1 className="text-2xl text-center mb-5">Welcome to room: {roomDescription}</h1>
         </div>
     );
 };

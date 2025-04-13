@@ -7,11 +7,13 @@ import CreateRoomPage from "./pages/CreateRoomPage";
 import JoinRoomPage from "./pages/JoinRoomPage";
 import InRoomPage from "./pages/InRoomPage";
 import FootNote from "./pages/common/footNote";
+import HeaderComponent from "./pages/common/components/header";
 import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col">
+      <HeaderComponent/>
       <div className="flex-grow flex items-center justify-center">
         <Routes>
           <Route path="/" element={<HomePage />} />
