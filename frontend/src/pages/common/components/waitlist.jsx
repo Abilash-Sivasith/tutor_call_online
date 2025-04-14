@@ -1,4 +1,4 @@
-  import React, { useState, useEffect } from 'react';
+  import React from 'react';
   import "../../common/css/waitlist.css";
 
   function WaitlistComponent({ username, roomId }) {
@@ -30,6 +30,41 @@
             {/* row 3 */}
             <tr>
               <th>3</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>4</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>5</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>6</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>7</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>8</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>9</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>10</th>
               <td>Brice Swyre</td>
               <td>Tax Accountant</td>
             </tr>

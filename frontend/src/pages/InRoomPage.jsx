@@ -19,11 +19,17 @@ const InRoomPage = () => {
                     <RoomDescription currentRoomCode={currentRoomCode} />
                     <h1 className="text-center text-1xl mb-10">roomId: {roomId}</h1>
                     <div>
-                        {/* Scrollable pane with a wider table */}
                         <div className="overflow-y-auto max-h-80 border border-gray-300 rounded-lg w-full">
                             <WaitlistComponent/>
                         </div>
-                    
+                    </div>
+                    <div>
+                        {/** add the join list and question here  */}
+                    </div>
+                    <div className="mt-5 flex justify-center items-center">
+                        <button className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-blue-600" onClick={() => navigate("/")}>
+                            Leave Room
+                        </button>
                     </div>
                 </div>
             </div>
