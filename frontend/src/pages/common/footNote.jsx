@@ -21,7 +21,7 @@
                     <a href="https://github.com/Abilash-Sivasith">
                         <img
                             src="../src/pages/common/svgs/github-mark-white.svg"
-                            alt="Custom Icon"
+                            alt="github Icon"
                             width={30}
                             height={30}
                         />
