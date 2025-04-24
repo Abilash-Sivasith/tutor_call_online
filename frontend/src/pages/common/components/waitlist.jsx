@@ -4,7 +4,7 @@
   function WaitlistComponent({ username, roomId }) {
 
     return (
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-200">
+      <div>
         <table className="table">
           {/* head */}
           <thead>
@@ -65,6 +65,36 @@
             </tr>
             <tr>
               <th>10</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>11</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>12</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>13</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>14</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>15</th>
+              <td>Brice Swyre</td>
+              <td>Tax Accountant</td>
+            </tr>
+            <tr>
+              <th>16</th>
               <td>Brice Swyre</td>
               <td>Tax Accountant</td>
             </tr>

@@ -1,0 +1,25 @@
+.leave-button {
+    padding: 1.25rem 5rem; /* py-5 px-20 = 20px vertical, 80px horizontal */
+    background-color: #ef4444; /* Tailwind red-500 */
+    color: white;
+    border-radius: 0.5rem; /* rounded-lg */
+    transition: background-color 0.2s;
+  }
+  
+.leave-button:hover {
+    background-color: white; /* Tailwind blue-600 */
+    color: black;
+  }
+
+.good-button {
+    padding: 1.25rem 5rem; /* py-5 px-20 = 20px vertical, 80px horizontal */
+    background-color: green; /* Tailwind red-500 */
+    color: white;
+    border-radius: 0.5rem; /* rounded-lg */
+    transition: background-color 0.2s;   
+}
+
+.good-button:hover {
+    background-color: white ;
+    color: black;
+}

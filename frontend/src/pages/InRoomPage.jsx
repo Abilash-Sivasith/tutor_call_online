@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import WaitlistComponent from "./common/components/waitlist.jsx";
 import RoomDescription from "./common/components/roomDescription.jsx"
 import HeaderComponent from "./common/components/header.jsx"
+import "./common/css/style.css"
 
 const InRoomPage = () => {
     const navigate = useNavigate();
@@ -14,8 +15,8 @@ const InRoomPage = () => {
 
     return (
         <div>
-            <div className="flex-col justify-center items-center flex-1 min-h-screen">
-                <div className="gap-4 py-10 mt-10">
+            <div className="flex flex-col justify-center items-center flex-1 min-h-screen px-10">
+                <div>
                     <RoomDescription currentRoomCode={currentRoomCode} />
                     <h1 className="text-center text-1xl mb-10">roomId: {roomId}</h1>
                     <div>
@@ -23,11 +24,17 @@ const InRoomPage = () => {
                             <WaitlistComponent/>
                         </div>
                     </div>
-                    <div>
-                        {/** add the join list and question here  */}
+                    <div className="mt-5 flex justify-center items-center">
+                        <button className="good-button"> 
+                            Join Waitlist 
+                        </button>
+                        <input 
+                            type='text' 
+                            placeholder="Question Number" 
+                            className="border border-gray-300 rounded-lg px-4 py-5 ml-5"/>
                     </div>
                     <div className="mt-5 flex justify-center items-center">
-                        <button className="px-20 py-5 bg-red-500 text-white rounded-lg hover:bg-blue-600" onClick={() => navigate("/")}>
+                        <button className="leave-button" onClick={() => navigate("/")}>
                             Leave Room
                         </button>
                     </div>
