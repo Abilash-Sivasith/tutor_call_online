@@ -43,7 +43,7 @@ const JoinRoomPage = () => {
     };
   
     const handleInputChange = (e) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      setFormData({ ...formData, [e.target.name]: e.target.value }); //  ... is the spread operations and it copies key, value pairs from form data and puts it into new object
     };
 
     return (

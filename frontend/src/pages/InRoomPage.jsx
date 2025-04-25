@@ -4,6 +4,8 @@ import WaitlistComponent from "./common/components/waitlist.jsx";
 import RoomDescription from "./common/components/roomDescription.jsx"
 import HeaderComponent from "./common/components/header.jsx"
 import "./common/css/style.css"
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const InRoomPage = () => {
     const navigate = useNavigate();
@@ -12,6 +14,42 @@ const InRoomPage = () => {
     const { roomId, username } = location.state || {}; // Get the passed state from the previous page
     const myUsername = username;
     const currentRoomCode = roomId;
+
+    const [question, setQuestion] = useState({
+        question: ""
+    });
+
+    const {mutate: questionMutation, isError, isPending, error} = useMutation({
+        mutationFn: async ({question}) => {
+            const res = await fetch("/api/joinInWaitlist", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({username, roomId, question})
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data?.message || "Failed to join waitlist"); // the data?.message syntax is a safe ways of saying “If data exists, get data.message; otherwise, just return undefined.”
+            }
+            return data;
+        }, 
+        onSuccess: () => {
+            toast.success("Waitlist joined successfully");
+        },
+        OnError: (error) => {
+            toast.error(error.message || "Something went wrong when trying to join list");
+        }
+    });
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        questionMutation(question) // this is the question in the const [question, setQuestion]
+    };
+
+    const handleInputChange = (event) => {
+        setQuestion({question: event.target.value})
+    }
 
     return (
         <div>
@@ -25,13 +63,21 @@ const InRoomPage = () => {
                         </div>
                     </div>
                     <div className="mt-5 flex justify-center items-center">
-                        <button className="good-button"> 
-                            Join Waitlist 
+                        <button 
+                            className="good-button"
+                            type="submit"
+                            onClick={handleSubmit}
+                            disabled={isPending}
+                        > 
+                            {isPending ? "Loading..." : "Join Wishlist"}
                         </button>
                         <input 
                             type='text' 
+                            onChange={handleInputChange}
+                            value= {question.question}
                             placeholder="Question Number" 
                             className="border border-gray-300 rounded-lg px-4 py-5 ml-5"/>
+                            
                     </div>
                     <div className="mt-5 flex justify-center items-center">
                         <button className="leave-button" onClick={() => navigate("/")}>

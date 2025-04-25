@@ -170,7 +170,7 @@ export const leaveRoom = async (req, res) => {
 
 export const joinInWaitlist = async (req, res) => {
     try {
-        const { username, roomId } = req.body;
+        const { username, roomId, question } = req.body;
 
         const room = Room.find({RoomId: roomId})
         if (!room) {
@@ -187,14 +187,24 @@ export const joinInWaitlist = async (req, res) => {
             { new: true }
         );
 
-        user.PositionInList = updatedRoom.InWaitlist.length + 1;
-        user.Question = "No question";
+        const waitlistLenght = updatedRoom.InWaitlist.length;
+        console.log("waitlistLength --> " + waitlistLenght)
+
+        const updatedUser = await User.findOneAndUpdate(
+            {UserId: username},
+            {
+                $set: {
+                    Question: question,
+                    PositionInList: 1
+                }
+            },
+            {new: true}
+        );
 
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
         }
-
-        return res.status(200).json({ message: "User joined the waitlist successfully -->", room: updatedRoom });
+        return res.status(200).json({ message: "User joined the waitlist successfully --> ", room: updatedRoom });
         
     } catch (error) {
         console.log("Error in joinInWaitlist: ", error.message);
