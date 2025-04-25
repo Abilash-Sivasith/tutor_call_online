@@ -142,6 +142,7 @@ export const leaveRoom = async (req, res) => {
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: tempUser.inRoom },  
             { $pull: { InRoom: tempUser._id } },
+            { $pull: {InWaitlist: tempUser._id}},
             { new: true }
         );
 
@@ -156,10 +157,9 @@ export const leaveRoom = async (req, res) => {
             return res.status(404).json({ message: `User ${usersname} deletion failed` });
         }
 
-        // Send success response
         return res.status(200).json({
             room: updatedRoom,
-            message: `User ${usersname} left room and was deleted successfully`
+            message: `User ${usersname} left the room and was deleted successfully`
         });
 
     } catch (error) {
