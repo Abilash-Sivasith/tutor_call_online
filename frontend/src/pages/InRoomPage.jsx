@@ -15,6 +15,25 @@ const InRoomPage = () => {
     const myUsername = username;
     const currentRoomCode = roomId;
 
+    const leaveRoom = async () => {
+        try {
+            const res = await fetch(`/api/leaveRoom?username=${encodeURIComponent(username)}`, {
+                 method: "POST",
+                 headers: {
+                    "Content-Type": "application/json"
+                 }
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data?.message || "Failed to leave room");
+            }
+            toast.success("Left Room Successfully")
+            navigate("/");
+        } catch (error) {
+            toast.error(error.message || "Something went wrong")
+        }
+    }
+
     const [question, setQuestion] = useState({
         question: ""
     });
@@ -26,7 +45,7 @@ const InRoomPage = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({username, roomId, question})
+                body: JSON.stringify({myUsername, roomId, question})
             });
             const data = await res.json();
             if (!res.ok) {
@@ -80,7 +99,7 @@ const InRoomPage = () => {
                             
                     </div>
                     <div className="mt-5 flex justify-center items-center">
-                        <button className="leave-button" onClick={() => navigate("/")}>
+                        <button className="leave-button" onClick={leaveRoom}>
                             Leave Room
                         </button>
                     </div>
