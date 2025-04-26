@@ -200,6 +200,7 @@ export const joinInWaitlist = async (req, res) => {
             },
             {new: true}
         );
+        console.log("JoinInWaitlist updatedUser --> " + updatedRoom)
 
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
