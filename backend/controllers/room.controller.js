@@ -141,11 +141,15 @@ export const leaveRoom = async (req, res) => {
         // First, remove the user from the room's inRoom list
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: tempUser.inRoom },  
-            { $pull: { InRoom: tempUser._id } },
-            { $pull: {InWaitlist: tempUser._id}},
+            {
+                $pull: {
+                    InRoom: tempUser._id,
+                    InWaitlist: tempUser._id
+                }
+            },
             { new: true }
         );
-
+        
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found or user not in room" });
         }
