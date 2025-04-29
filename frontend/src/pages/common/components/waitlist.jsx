@@ -1,7 +1,38 @@
-  import React from 'react';
+  import React, { useState } from 'react';
   import "../../common/css/waitlist.css";
+import { useMutation } from '@tanstack/react-query';
 
   function WaitlistComponent({ username, roomId }) {
+
+    const [waitlist, setWaitlist] = useState({waitlist: []})
+
+    const { mutate: waitlistMutation, isError, isPending, error } = useMutation({
+      mutationFn: async ({ roomId }) => {
+        const res = await fetch(`/api/getInWaitlist?RoomId=${roomId}`, {
+          method: "GET"
+        });
+    
+        const data = await res.json();
+    
+        if (!res.ok) {
+          throw new Error("Something went wrong fetching waitlist");
+        }
+        return data;
+      }
+    });
+
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      waitlistMutation({ roomId }, {
+        onSuccess: (data) => {
+          console.log("Waitlist data:", data.roomWaitlist);
+          setWaitlist({ waitlist: data.roomWaitlist });
+        }
+      });    };
+
+    const handleInputChange = (event) => {
+      setWaitlist({waitlist: event.target.value})
+    }
 
     return (
       <div>
