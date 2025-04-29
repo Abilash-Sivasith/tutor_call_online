@@ -45,7 +45,7 @@ const InRoomPage = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({myUsername, roomId, question})
+                body: JSON.stringify({username, roomId, question})
             });
             const data = await res.json();
             if (!res.ok) {

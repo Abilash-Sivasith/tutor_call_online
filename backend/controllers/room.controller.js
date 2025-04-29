@@ -172,40 +172,41 @@ export const joinInWaitlist = async (req, res) => {
     try {
         const { username, roomId, question } = req.body;
 
-        const room = Room.find({RoomId: roomId})
+        const room = await Room.findOne({RoomId: roomId})
         if (!room) {
             return res.status(400).json({message: "room does not exsit"});
         }
+        console.log("room --> " + room)
 
         const user = await User.findOne({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+
         const updatedRoom = await Room.findOneAndUpdate(
             { RoomId: roomId },
-            { $push: { InWaitlist: user._id } }, 
+            { $addToSet: { InWaitlist: user._id } },
             { new: true }
-        );
+        ).populate("InWaitlist");
 
-        const waitlistLenght = updatedRoom.InWaitlist.length;
-        console.log("waitlistLength --> " + waitlistLenght)
+        console.log("updatedRoom --> " + updatedRoom)
+        const position = updatedRoom.InWaitlist.length;
 
         const updatedUser = await User.findOneAndUpdate(
             {UserId: username},
             {
                 $set: {
                     Question: question,
-                    PositionInList: 1
+                    PositionInList: position
                 }
             },
             {new: true}
         );
-        console.log("JoinInWaitlist updatedUser --> " + updatedRoom)
 
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found" });
         }
-        return res.status(200).json({ message: "User joined the waitlist successfully --> ", room: updatedRoom });
+        return res.status(200).json({ message: "User joined the waitlist successfully --> ", updatedRoom });
         
     } catch (error) {
         console.log("Error in joinInWaitlist: ", error.message);
