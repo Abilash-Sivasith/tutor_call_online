@@ -149,7 +149,7 @@ export const leaveRoom = async (req, res) => {
             },
             { new: true }
         );
-        
+
         if (!updatedRoom) {
             return res.status(404).json({ message: "Room not found or user not in room" });
         }
@@ -180,8 +180,7 @@ export const joinInWaitlist = async (req, res) => {
         if (!room) {
             return res.status(400).json({message: "room does not exsit"});
         }
-        console.log("room --> " + room)
-
+        
         const user = await User.findOne({ UserId: username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });

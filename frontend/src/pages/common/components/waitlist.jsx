@@ -1,38 +1,73 @@
-  import React, { useState } from 'react';
+  import React, { useEffect, useState } from 'react';
   import "../../common/css/waitlist.css";
-import { useMutation } from '@tanstack/react-query';
 
   function WaitlistComponent({ username, roomId }) {
 
-    const [waitlist, setWaitlist] = useState({waitlist: []})
+    const [waitlist, setWaitlist] = useState([])
+    const [errorFlag, setErrorFlag] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const { mutate: waitlistMutation, isError, isPending, error } = useMutation({
-      mutationFn: async ({ roomId }) => {
-        const res = await fetch(`/api/getInWaitlist?RoomId=${roomId}`, {
+    useEffect(() => {
+      getInWaitlist()
+    }, [])
+
+    const getInWaitlist = async () => {
+      try {
+        const response = await fetch(`/api/getInWaitlist?RoomId=${roomId}`, {
           method: "GET"
         });
     
-        const data = await res.json();
+        if (!response.ok) {
+          throw new Error("something went wrong fetching the waitlist");
+        }
     
-        if (!res.ok) {
-          throw new Error("Something went wrong fetching waitlist");
-        }
-        return data;
+        // const data = await response.json();
+        setWaitlist(response.data);
+      } catch (error) {
+        setErrorFlag(true);
+        setErrorMessage(error.toString());
       }
-    });
+    };
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      waitlistMutation({ roomId }, {
-        onSuccess: (data) => {
-          console.log("Waitlist data:", data.roomWaitlist);
-          setWaitlist({ waitlist: data.roomWaitlist });
-        }
-      });    };
+    {/* th is the table header cell (name on the column) */}
+    {/* td is table data cells (exact values to put into that columns)*/}
 
-    const handleInputChange = (event) => {
-      setWaitlist({waitlist: event.target.value})
+    const list_of_users = () => {
+      return useIsRestoring.map((item) => {
+        <tr key={item.user_id}>
+          <th scope="row">{item.user_id}</th>
+        </tr>
+      })
     }
+
+    /** 
+    if (errorFlag) {
+      return (
+        <div>
+          <div style={{color = "red"}}>{errorMessage}</div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <table className='table'>
+            <thead>
+              <tr>
+                <tr scope='col'>position</tr>
+                <tr scope='col'>Name</tr>
+              </tr>
+            </thead>
+            <tbody>
+              {list_of_users()}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+    */
+
+
+
 
     return (
       <div>
