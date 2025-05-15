@@ -22,7 +22,8 @@
         }
     
         const data = await response.json();
-        setWaitlist(response.data);
+        console.log("data ---> ", data.roomWaitlist);
+        setWaitlist(data.roomWaitlist);
       } catch (error) {
         setErrorFlag(true);
         setErrorMessage(error.toString());
@@ -33,13 +34,14 @@
     {/* td is table data cells (exact values to put into that columns)*/}
 
     const list_of_users = () => {
-      return useIsRestoring.map((item) => {
-        <tr key={item.user_id}>
-          <th scope="row">{item.user_id}</th>
-        </tr>
-      })
+      return waitlist.map((item) => {
+        return (
+          <tr key={item._id}>
+            <th scope="row">{item.username}</th>
+          </tr>
+        );
+      });
     }
-
     
     if (errorFlag) {
       return (
@@ -53,8 +55,8 @@
           <table className='table'>
             <thead>
               <tr>
-                <tr scope='col'>position</tr>
-                <tr scope='col'>Name</tr>
+                <th scope='col'>position</th>
+                <th scope='col'>Name</th>
               </tr>
             </thead>
             <tbody>
