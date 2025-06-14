@@ -181,7 +181,7 @@ export const joinInWaitlist = async (req, res) => {
             { $push: { InWaitlist: user._id } },  // Removes user._id from InWaitlist
             { new: true } // Returns the updated document
         );
-
+        
         user.PositionInList = updatedRoom.InWaitlist.length + 1;
         user.Question = "No question";
 
