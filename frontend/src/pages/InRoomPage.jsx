@@ -11,13 +11,9 @@ const InRoomPage = () => {
     const location = useLocation();
     const { roomId, username } = location.state || {}; // Get the passed state from the previous page
 
+    
+       
 
-    const RoomDescription = ({ currentRoomCode }) => {
-        const [roomDescription, setRoomDescription] = useState('');
-        const [error, setError] = useState(false);
-        const [errorMessage, setErrorMessage] = useState("");
-
-    }
 }
 
 export default InRoomPage;
