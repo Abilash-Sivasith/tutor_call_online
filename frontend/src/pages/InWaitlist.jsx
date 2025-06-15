@@ -26,18 +26,35 @@ function InWaitListTable({roomId : string}) {
         })
     }
 
-    async function fetchAllUserDetails(){
-        for (const user of waitlist) {
-            await fetchUserDetails(user);
-        }
-    }
-
-    useEffect(() => {
-        if (waitlist.length > 0) {
-            fetchAllUserDetails();
-        }
-    }, [waitlist])
-
+    return (
+        <div className='waitlist-container text-center'>
+            {usersInWaitlist.length  === 0 ? (
+                <p> Wait for people to join the waitlist</p>
+            ) : (
+                <table className="waitlist-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Person</th>
+              <th>Question</th>
+              <th>Position</th>
+            </tr>
+          </thead>
+          <tbody>
+            {waitlist.map((person, index) => {
+              // console.log("userDetais about person--> ", userDetails[person]);
+              const user = userDetails[person];
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+            )}
+        </div>
+    );
 }
 
 export default InWaitListTable;

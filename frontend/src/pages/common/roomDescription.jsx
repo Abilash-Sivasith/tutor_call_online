@@ -1,23 +1,23 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 
-function RoomDescription({roomId : string}) {
+function RoomDescription({currentRoomCode}) {
     const [roomDescription, setRoomDescription] = useState("");
     const [errorFlag, setErrorFlag] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-    React.useEffect(() => {
-        if (!roomId) {
+    useEffect(() => {
+        if (!currentRoomCode) {
             return;
         }
         axios.get(`/api/getRoomDescription?RoomId=${currentRoomCode}`).then((res) => {
-            setRoomDescription(res.roomTitle);
+            setRoomDescription(res.data.roomTitle);
             setErrorFlag(false);
         }).catch((err) => {
             setErrorFlag(true);
             setErrorMessage(err.toString());
         })
-    }, [roomId]);
+    }, [currentRoomCode]);
 
     if (errorFlag) {
         return <span style={{ color: "red" }}>{errorMessage}</span>;
