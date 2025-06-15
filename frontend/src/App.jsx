@@ -11,6 +11,10 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
+    <div>
+    <div className="navbar bg-primary text-primary-content">
+        <button className="btn btn-ghost text-xl">Tutor Call Online</button>
+    </div>
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow flex items-center justify-center">
         <Routes>
@@ -22,6 +26,7 @@ function App() {
       </div>
       <FootNote />
       <Toaster/>
+    </div>
     </div>
   );
 }
