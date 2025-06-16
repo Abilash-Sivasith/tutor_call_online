@@ -13,24 +13,21 @@ const InRoomPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { roomId, username } = location.state;
-    const leaveRoomButton = async (username) => {
+
+
+
+    async function leaveRoomButton(username) {
         try {
             axios.get(`/api/leaveRoom?username=${username}`).then((res) => {
                 toast.success("you have left room ", roomId);
-
+                navigate("/");
             }).catch((err) => {
                 toast.error(err.toString());
-            })
-            const res = await fetch(`/api/leaveRoom?username=${username}`, {method: 'POST'});
-            if (!res.ok) {
-                throw new Error("Error in deleting user");
-            }
-            navigate("/");
+            })  
         } catch (error) {
             return;
         }
-    };
-
+    }
 
     return (
         <div className="flex flex-col justify-center items-center h-screen">
@@ -41,7 +38,6 @@ const InRoomPage = () => {
             <div className="flex flex-col gap-4 w-full max-w-3xl">
                 {/* Scrollable pane */}
                 <div className="overflow-y-auto max-h-80 border border-gray-300 rounded-lg w-full">
-                    {/* add waitlist here*/}
                     <InWaitListTable roomId={roomId}/>
                 </div>
                 <div>
