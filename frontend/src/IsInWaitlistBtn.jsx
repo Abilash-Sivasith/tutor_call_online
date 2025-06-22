@@ -9,8 +9,7 @@ function WaitlistButton({ username, currentUserInWaitlist }) {
 
   }, [username]);
 
-
-
+  //TODO add support to actually join the wiatlist with a question and reload the waitlist once that operation is hit
 
   return (
     <div className="flex justify-between items-center gap-4 w-full">

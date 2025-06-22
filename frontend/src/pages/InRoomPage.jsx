@@ -33,7 +33,7 @@ const InRoomPage = () => {
                     )
                 ).then(userDataList => {
                     const filtered = userDataList.filter(user => user !== null);
-                    console.log("filtered data --> ", filtered ) // shows all the user data
+                    // console.log("filtered data --> ", filtered ) // shows all the user data
                     setWaitlist(filtered);
                     setErrorFlag(false);
                 }).catch((err) => {
@@ -93,8 +93,6 @@ const InRoomPage = () => {
             </div>
         </div>
     )
-       
-
 }
 
 export default InRoomPage;
