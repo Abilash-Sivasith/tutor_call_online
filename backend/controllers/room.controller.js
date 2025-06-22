@@ -121,10 +121,10 @@ export const joinInRoom = async (req, res) => {
     }
 }
 
+
 export const leaveRoom = async (req, res) => {
     try {
         const usersname = req.query.username;
-        console.log("username in leaveRoom --> ", usersname);
 
         // Fetch the user based on the username
         const tempUser = await User.findOne({ UserId: usersname });
@@ -144,7 +144,6 @@ export const leaveRoom = async (req, res) => {
             return res.status(404).json({ message: "Room not found or user not in room" });
         }
 
-        // Now, proceed to delete the user after being removed from the room
         const user = await User.findOneAndDelete({ UserId: usersname });
 
         if (!user) {

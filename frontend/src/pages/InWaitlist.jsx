@@ -35,7 +35,7 @@ function InWaitListTable({roomId}) {
                 setErrorFlag(true);
                 setErrorMessage(err.toString());
             });
-    }, [roomId]);
+    }, [roomId]); //TODO update the waitlist when the join/leave waitlist btn is hit
 
 
 return (
