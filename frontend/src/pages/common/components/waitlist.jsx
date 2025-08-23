@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "../../common/css/waitlist.css";
+
+//TODO when a user enter the waitlist and leaves the room the waitlist try to load that old person (person who has left the room and therfore deleted) 
 
 function WaitlistComponent({ username, roomId }) {
   const [waitlist, setWaitlist] = useState([]);
@@ -12,10 +14,10 @@ function WaitlistComponent({ username, roomId }) {
         const response = await fetch(`/api/getInWaitlist?RoomId=${roomId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch waitlist');
+        } else {
+          const data = await response.json();
+          setWaitlist(data.roomWaitlist);
         }
-
-        const data = await response.json();
-        setWaitlist(data.roomWaitlist);
       } catch (err) {
         console.error('Error fetching waitlist:', err);
       }
@@ -24,7 +26,7 @@ function WaitlistComponent({ username, roomId }) {
     if (roomId) {
       fetchWaitlist();
     }
-  }, [roomId]); // Re-fetch when roomId changes
+  }, [roomId, username]); // Re-fetch when roomId changes
 
   // Function to fetch user details for a given UserId
   const fetchUserDetails = async (userId) => {
@@ -34,6 +36,8 @@ function WaitlistComponent({ username, roomId }) {
         throw new Error('Failed to fetch user details');
       }
       const data = await response.json();
+      // is thsi being cleared when the fetchWaitlit is called
+      // does this have to be its own effect
       setUserDetails((prevDetails) => ({
         ...prevDetails,
         [userId]: data.user,
